@@ -18,27 +18,6 @@ end
 return {
   {
     "yetone/avante.nvim",
-    opts = function(_, opts)
-      -- 扩展文件类型支持
-      opts.filetypes = vim.tbl_extend("force", opts.filetypes or {}, {
-        ["*"] = false,
-        avante = true,
-        c = true,
-        cpp = true,
-        go = true,
-        lua = true,
-        rust = true,
-        python = true,
-        markdown = true,
-      })
-    end,
-  },
-
-  -----------------------------------------------------------------------------
-  -- Avante 配置覆盖
-  -----------------------------------------------------------------------------
-  {
-    "yetone/avante.nvim",
     -- 使用 opts 函数模式来合并 LazyVim 的默认设置
     opts = function(_, opts)
       -- 加载自定义 Prompts
@@ -110,20 +89,30 @@ return {
       if p_status then avante_prompts = p_mod.avante end
 
       local custom_keys = {
-        { "<leader>aa", function() require("avante.api").ask() end,            desc = "Avante: Ask",         mode = { "n", "v" } },
-        { "<leader>ae", function() require("avante.api").edit() end,           desc = "Avante: Edit",        mode = { "n", "v" } },
-        { "<leader>af", "<cmd>AvanteClear<cr>",                                desc = "Avante: Clear",       mode = { "n", "v" } },
-        { "<leader>a?", function() require("avante.api").select_model() end,   desc = "Avante: Select Model" },
-        -- 使用自定义 Prompt 函数的映射
-        { "<leader>ar", create_avante_call(avante_prompts.refactor),           desc = "Refactor",            mode = { "n", "v" } },
-        { "<leader>ao", create_avante_call(avante_prompts.optimize_code),      desc = "Optimize",            mode = { "n", "v" } },
-        { "<leader>ax", create_avante_call(avante_prompts.explain_code, true), desc = "Explain",             mode = { "n", "v" } },
-        { "<leader>ab", create_avante_call(avante_prompts.fix_bugs, true),     desc = "Fix Bugs",            mode = { "n", "v" } },
+        { "<leader>aa", "<cmd>AvanteAsk<CR>",   desc = "Ask",   mode = { "n", "v" } },
+        { "<leader>al", "<cmd>AvanteClear<cr>", desc = "Clear", mode = { "n", "v" } },
+        -- { "<leader>ae", "<cmd>AvanteEdit<CR>", desc = "Edit Avante", mode = { "n", "v" } },
+
+        {
+          "<leader>ae",
+          function()
+            require("avante.api").edit()
+          end,
+          desc = "Edit",
+          mode = { "n", "v" },
+        },
+
+        -- --- 增强指令 (基于自定义 Prompts) ---
+        { "<leader>ar", create_avante_call(avante_prompts.refactor),       desc = "Refactor", mode = { "n", "v" } },
+        { "<leader>ao", create_avante_call(avante_prompts.optimize_code),  desc = "Optimize", mode = { "n", "v" } },
+        -- { "<leader>ax", create_avante_call(avante_prompts.explain_code, true), desc = "Explain",  mode = { "n", "v" } },
+        { "<leader>ax", create_avante_call(avante_prompts.explain_code),   desc = "Explain",  mode = { "n", "v" } },
+        { "<leader>ab", create_avante_call(avante_prompts.fix_bugs, true), desc = "Fix Bugs", mode = { "n", "v" } },
         {
           "<leader>av",
           function()
             local prompt = (vim.bo.filetype == "rust") and avante_prompts.rust_design_review or
-            avante_prompts.code_review
+                avante_prompts.code_review
             create_avante_call(prompt)()
           end,
           desc = "Code Review",

@@ -9,8 +9,10 @@
     "lazyvim.plugins.extras.editor.inc-rename",
     "lazyvim.plugins.extras.editor.neo-tree",
     "lazyvim.plugins.extras.editor.outline",
+    "lazyvim.plugins.extras.formatting.prettier",
     "lazyvim.plugins.extras.lang.clangd",
-    "lazyvim.plugins.extras.lang.markdown"
+    "lazyvim.plugins.extras.lang.markdown",
+    "lazyvim.plugins.extras.lang.vue"
   ],
   "install_version": 8,
   "news": {

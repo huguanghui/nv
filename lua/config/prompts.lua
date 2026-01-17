@@ -64,6 +64,8 @@ M.avante = {
 
   Use clear, plain language accessible to someone with programming knowledge but new to this specific codebase.
   Include concrete examples where helpful.
+
+  简体中文回答
 ]],
 
   fix_bugs = [[
