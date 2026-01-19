@@ -3,10 +3,6 @@ local term = require("snacks.terminal")
 local lazygit = require("snacks.lazygit")
 local opts = { noremap = true, silent = true }
 
--- comment line
-map("n", "<leader>/", "<cmd>normal gcc<cr>", { desc = "Comment" })
-map("v", "<leader>/", "<cmd>normal gcc<cr>", { desc = "Comment" })
-
 -- escape
 map("i", "jk", "<ESC>:w<CR>", opts)
 
