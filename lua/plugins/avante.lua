@@ -21,10 +21,6 @@ return {
     -- 使用 opts 函数模式来合并 LazyVim 的默认设置
     opts = function(_, opts)
       -- 加载自定义 Prompts
-      local avante_prompts = {}
-      local p_status, p_mod = pcall(require, "config.prompts")
-      if p_status then avante_prompts = p_mod.avante end
-
       -- 基础配置合并
       opts.provider = "copilot"
       opts.cursor_applying_provider = "copilot"
