@@ -12,7 +12,8 @@
     "lazyvim.plugins.extras.formatting.prettier",
     "lazyvim.plugins.extras.lang.clangd",
     "lazyvim.plugins.extras.lang.markdown",
-    "lazyvim.plugins.extras.lang.vue"
+    "lazyvim.plugins.extras.lang.vue",
+    "lazyvim.plugins.extras.lang.yaml"
   ],
   "install_version": 8,
   "news": {
