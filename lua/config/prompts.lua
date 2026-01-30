@@ -120,6 +120,8 @@ M.avante = {
   - Provide improvement suggestions with example code where helpful
 
   Only include Critical and Major issues. Balance critique with positive observations.
+
+  简体中文回答
 ]],
 
   architecture_suggestion = [[
@@ -139,6 +141,8 @@ M.avante = {
   - Note any migration challenges or considerations
 
   Focus on architectural-level concerns rather than implementation details.
+
+  简体中文回答
 ]],
 
   add_tests = [[
