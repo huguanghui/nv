@@ -142,16 +142,22 @@ local function getLspName()
   local buf_client_names = {}
   local buf_ft = vim_bo.filetype
   for _, client in pairs(buf_clients) do
-    if client.name ~= "null-ls" then table.insert(buf_client_names, client.name) end
+    if client.name ~= "null-ls" then
+      table.insert(buf_client_names, client.name)
+    end
   end
   local lint_s, lint_module = pcall(require, "lint")
   if lint_s and lint_module.linters_by_ft[buf_ft] then
-    for _, linter in ipairs(lint_module.linters_by_ft[buf_ft]) do table.insert(buf_client_names, linter) end
+    for _, linter in ipairs(lint_module.linters_by_ft[buf_ft]) do
+      table.insert(buf_client_names, linter)
+    end
   end
   local ft = vim_api.nvim_get_option_value("filetype", { buf = bufnr })
   local sources_ok, sources = pcall(require, "null-ls.sources")
   if sources_ok then
-    for _, source in ipairs(sources.get_available(ft)) do table.insert(buf_client_names, source.name) end
+    for _, source in ipairs(sources.get_available(ft)) do
+      table.insert(buf_client_names, source.name)
+    end
   end
   local hash = {}
   local unique_client_names = {}
@@ -175,7 +181,12 @@ return {
       local noice_status_mode = require("noice").api.status.mode
       local mel_ok, mel
 
-      local space = { function() return " " end, color = { bg = colors.bg_dark, fg = colors.blue } }
+      local space = {
+        function()
+          return " "
+        end,
+        color = { bg = colors.bg_dark, fg = colors.blue },
+      }
 
       local filename = {
         function()
@@ -183,10 +194,14 @@ return {
           local filename = vim_fn.expand("%:t")
           local ftype = vim_bo.filetype
           local cwd = vim_api.nvim_call_function("getcwd", {})
-          if ftype == "yaml" and string.sub(filename, 1, 11) == "kubectl-edit" then return "kubernetes" end
+          if ftype == "yaml" and string.sub(filename, 1, 11) == "kubectl-edit" then
+            return "kubernetes"
+          end
           local show_name = filename
           if #cwd > 0 and #ftype > 0 and string.find(fname, cwd) then
-            show_name = fname:sub(#cwd + 2):gsub("([^/]+)/", function(dir) return dir:sub(1, 1) .. "/" end)
+            show_name = fname:sub(#cwd + 2):gsub("([^/]+)/", function(dir)
+              return dir:sub(1, 1) .. "/"
+            end)
           end
           local indicators = (vim_bo.readonly and "  " or "") .. (vim_bo.modified and "  " or "")
           return indicators .. show_name
@@ -196,14 +211,42 @@ return {
         separator = { left = "", right = "" },
       }
 
-      local filetype = { "filetype", icons_enabled = false, color = { bg = colors.gray2, fg = colors.blue, gui = "bold" }, separator = { left = "", right = "" }, cond = conditions.buffer_not_empty and conditions.hide_small }
-      local branch = { "branch", icon = "", color = { bg = colors.green, fg = colors.bg, gui = "bold" }, separator = { left = "", right = "" }, cond = conditions.check_git_workspace and conditions.hide_in_width }
-      local location = { function() return string.format("%3d:%-2d", vim.fn.line("."), vim.fn.charcol(".")) end, color = { bg = colors.yellow, fg = colors.bg_dark, gui = "bold" }, separator = { left = "", right = "" }, cond = conditions.buffer_not_empty and conditions.hide_small }
-      local diff = { "diff", color = { bg = colors.gray2, fg = colors.bg, gui = "bold" }, separator = { left = "", right = "" }, symbols = { added = " ", modified = " ", removed = " " }, diff_color = { added = { fg = colors.green }, modified = { fg = colors.yellow }, removed = { fg = colors.red } }, cond = conditions.buffer_not_empty and conditions.hide_small }
+      local filetype = {
+        "filetype",
+        icons_enabled = false,
+        color = { bg = colors.gray2, fg = colors.blue, gui = "bold" },
+        separator = { left = "", right = "" },
+        cond = conditions.buffer_not_empty and conditions.hide_small,
+      }
+      local branch = {
+        "branch",
+        icon = "",
+        color = { bg = colors.green, fg = colors.bg, gui = "bold" },
+        separator = { left = "", right = "" },
+        cond = conditions.check_git_workspace and conditions.hide_in_width,
+      }
+      local location = {
+        function()
+          return string.format("%3d:%-2d", vim.fn.line("."), vim.fn.charcol("."))
+        end,
+        color = { bg = colors.yellow, fg = colors.bg_dark, gui = "bold" },
+        separator = { left = "", right = "" },
+        cond = conditions.buffer_not_empty and conditions.hide_small,
+      }
+      local diff = {
+        "diff",
+        color = { bg = colors.gray2, fg = colors.bg, gui = "bold" },
+        separator = { left = "", right = "" },
+        symbols = { added = " ", modified = " ", removed = " " },
+        diff_color = { added = { fg = colors.green }, modified = { fg = colors.yellow }, removed = { fg = colors.red } },
+        cond = conditions.buffer_not_empty and conditions.hide_small,
+      }
 
       local pyenv = {
         function()
-          if vim_bo.filetype ~= "python" then return "" end
+          if vim_bo.filetype ~= "python" then
+            return ""
+          end
           local venv = vim.env.CONDA_DEFAULT_ENV or vim.env.VIRTUAL_ENV
           return venv and string.format("  %s", env_cleanup(venv)) or ""
         end,
@@ -212,11 +255,45 @@ return {
         cond = conditions.hide_in_width,
       }
 
-      local modes = { function() return mode() end, color = function() return { bg = modecolor[vim_fn.mode()] or colors.red, fg = colors.bg_dark, gui = "bold" } end, separator = { left = "", right = "" } }
+      local modes = {
+        function()
+          return mode()
+        end,
+        color = function()
+          return { bg = modecolor[vim_fn.mode()] or colors.red, fg = colors.bg_dark, gui = "bold" }
+        end,
+        separator = { left = "", right = "" },
+      }
 
-      local macro = { function() local reg = vim.fn.reg_recording(); return reg ~= "" and "󰃼 @" .. reg or "" end, cond = noice_status_mode.has, color = { fg = colors.red, bg = colors.bg_dark, gui = "bold" } }
-      local dia = { "diagnostics", sources = { "nvim_diagnostic" }, symbols = { error = " ", warn = " ", info = " ", hint = " " }, diagnostics_color = { error = { fg = colors.red }, warn = { fg = colors.yellow }, info = { fg = colors.purple }, hint = { fg = colors.cyan } }, color = { bg = colors.gray2, fg = colors.blue, gui = "bold" }, separator = { left = "" } }
-      local lsp = { function() return getLspName() end, separator = { left = "", right = "" }, cond = conditions.hide_small, color = { bg = colors.purple, fg = colors.bg, gui = "bold" } }
+      local macro = {
+        function()
+          local reg = vim.fn.reg_recording()
+          return reg ~= "" and "󰃼 @" .. reg or ""
+        end,
+        cond = noice_status_mode.has,
+        color = { fg = colors.red, bg = colors.bg_dark, gui = "bold" },
+      }
+      local dia = {
+        "diagnostics",
+        sources = { "nvim_diagnostic" },
+        symbols = { error = " ", warn = " ", info = " ", hint = " " },
+        diagnostics_color = {
+          error = { fg = colors.red },
+          warn = { fg = colors.yellow },
+          info = { fg = colors.purple },
+          hint = { fg = colors.cyan },
+        },
+        color = { bg = colors.gray2, fg = colors.blue, gui = "bold" },
+        separator = { left = "" },
+      }
+      local lsp = {
+        function()
+          return getLspName()
+        end,
+        separator = { left = "", right = "" },
+        cond = conditions.hide_small,
+        color = { bg = colors.purple, fg = colors.bg, gui = "bold" },
+      }
 
       local opts = {
         options = {
@@ -224,7 +301,9 @@ return {
           icons_enabled = true,
           component_separators = "",
           section_separators = "",
-          disabled_filetypes = { statusline = { "dashboard", "alpha", "ministarter", "snacks_dashboard", "snacks_terminal" } },
+          disabled_filetypes = {
+            statusline = { "dashboard", "alpha", "ministarter", "snacks_dashboard", "snacks_terminal" },
+          },
           always_divide_middle = true,
           -- 修改点 1：强制开启全局状态栏，不再受 TMUX 环境变量影响
           globalstatus = true,
@@ -243,7 +322,9 @@ return {
       table.insert(opts.sections.lualine_y, {
         function()
           local status_ok, sidekick = pcall(require, "sidekick.status")
-          if status_ok and sidekick.get().kind == "Normal" then return LazyVim.config.icons.kinds.Copilot end
+          if status_ok and sidekick.get().kind == "Normal" then
+            return LazyVim.config.icons.kinds.Copilot
+          end
           return ""
         end,
         cond = conditions.buffer_not_empty and conditions.hide_small,
@@ -255,11 +336,21 @@ return {
       if require("config.utils").is_mcp_present() then
         table.insert(opts.sections.lualine_y, 1, {
           function()
-            if not mel then mel_ok, mel = pcall(require, "mcphub.extensions.lualine") end
-            if not mel_ok then return "? MCP" end
+            if not mel then
+              mel_ok, mel = pcall(require, "mcphub.extensions.lualine")
+            end
+            if not mel_ok then
+              return "? MCP"
+            end
             mel:create_autocommands()
             local status_icon, _ = mel:get_status_display()
-            local count_or_spinner = (vim.g.mcphub_tool_active or vim.g.mcphub_resource_active or vim.g.mcphub_prompt_active) and "⠋" or tostring(vim.g.mcphub_active_servers or 0)
+            local count_or_spinner = (
+              vim.g.mcphub_tool_active
+              or vim.g.mcphub_resource_active
+              or vim.g.mcphub_prompt_active
+            )
+                and "⠋"
+              or tostring(vim.g.mcphub_active_servers or 0)
             return status_icon .. " " .. count_or_spinner
           end,
           color = { bg = colors.gray2, fg = colors.blue, gui = "bold" },
@@ -270,11 +361,13 @@ return {
 
       local auto = require("lualine.themes.auto")
       for _, field in ipairs({ "insert", "normal", "visual", "command", "replace", "inactive", "terminal" }) do
-        if auto[field] and auto[field].c then auto[field].c.bg = colors.bg_dark end
+        if auto[field] and auto[field].c then
+          auto[field].c.bg = colors.bg_dark
+        end
       end
       opts.options.theme = auto
 
       require("lualine").setup(opts)
     end,
-  }
+  },
 }
