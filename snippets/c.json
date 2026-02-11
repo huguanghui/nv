@@ -1,0 +1,35 @@
+{
+  "hgh debug": {
+    "prefix": "ht",
+    "body": ["printf(\"[HGH-TEST][%s %d]$0\\n\", __FUNCTION__, __LINE__);"],
+    "description": "Generic debug snippet"
+  },
+  "hgh main": {
+    "prefix": "hm",
+    "body": [
+      "#include <stdlib.h>",
+      "#include <stdio.h>",
+      "",
+      "int main(int argc, char *argv[])",
+      "{$0",
+      "",
+      "\treturn 0;",
+      "}"
+    ],
+    "description": "Generic main snippet"
+  },
+  "hgh extern": {
+    "prefix": "nocpp",
+    "body": [
+      "#ifdef __cplusplus",
+      "extern \"C\" {",
+      "#endif",
+      "$0",
+      "",
+      "#ifdef __cplusplus",
+      "} /* extern \"C\" */",
+      "#endif"
+    ],
+    "description": "Disable C++ name mangling in C headers"
+  }
+}
