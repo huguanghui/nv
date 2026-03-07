@@ -2,7 +2,7 @@ return {
   "folke/which-key.nvim",
   opts = function(_, opts)
     -- 保留原有的 preset 和 icons 設定
-    opts.preset = "classic"
+    -- opts.preset = "classic"
 
     opts.icons = opts.icons or {}
     opts.icons.rules = opts.icons.rules or {}

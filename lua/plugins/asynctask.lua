@@ -35,7 +35,7 @@ return {
       -- 其他推荐设置（可选，根据需要开启）
       vim.g.asyncrun_rootmarks = { ".git", ".svn", ".root", ".project", "Makefile" }  -- 项目根目录识别标记
       vim.g.asyncrun_save = 1          -- 运行前自动保存文件
-      vim.g.asyncrun_mode = "term"     -- 默认用终端模式运行（可改成 quickfix / silent 等）
+      vim.g.asyncrun_mode = "quickfix"     -- 默认用终端模式运行（可改成 quickfix / silent 等）
       vim.g.asyncrun_trim = 1          -- 去除输出末尾空行
     end,
 
