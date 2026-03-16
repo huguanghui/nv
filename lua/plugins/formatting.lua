@@ -3,12 +3,14 @@ return {
   opts = {
     formatters_by_ft = {
       aspvbs = { "djlint" }, -- 将 prettier 替换为 djlint
+      cmake = { "cmake_format" },
     },
     formatters = {
       djlint = {
         -- 可以根据需要添加参数，比如保留空格等
         prepend_args = { "--indent", "2" },
       },
+      cmake_format = {},
     },
   },
 }
