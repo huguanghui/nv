@@ -23,7 +23,6 @@ return {
       -- 加载自定义 Prompts
       -- 基础配置合并
       opts.provider = "copilot"
-      opts.cursor_applying_provider = "copilot"
       opts.rag_service = { enabled = false }
 
       -- 配置 Copilot Provider 详情
@@ -32,8 +31,7 @@ return {
       -- 行为与交互配置
       opts.behaviour = vim.tbl_extend("force", opts.behaviour or {}, {
         auto_suggestions = false,
-        enable_cursor_planning_mode = true,
-        minimize_diff = true,
+        enable_cursor_planning_mode = true, -- 计划模式
       })
 
       -- 快捷键映射覆盖 (针对 Avante 内部 UI)
@@ -48,21 +46,35 @@ return {
           prev = "[x",
         },
         suggestion = {
-          accept = "<M-l>", next = "<M-]>", prev = "<M-[>", dismiss = "<C-]>",
+          accept = "<M-l>",
+          next = "<M-]>",
+          prev = "<M-[>",
+          dismiss = "<C-]>",
         },
       })
 
       -- 特殊用户 (abz) 的环境变量逻辑覆盖
       if vim.env.USER == "abz" then
-        opts.provider = "claude"
-        opts.providers.claude = {
-          endpoint = os.getenv("LITELLM_ENDPOINT"),
-          model = "openrouter-claude-opus-4.5",
+        -- opts.provider = "claude"
+        -- opts.providers.claude = {
+        --   endpoint = os.getenv("LITELLM_ENDPOINT"),
+        --   model = "openrouter-claude-opus-4.5",
+        --   timeout = 50000,
+        --   context_window = 200000,
+        -- }
+        opts.provider = "openrouter"
+        opts.providers.openrouter = {
+          __inherited_from = 'openai',
+          endpoint = 'https://openrouter.ai/api/v1',
+          api_key_name = 'OPENROUTER_API_KEY',
+          model = 'anthropic/claude-sonnet-4.6',
           timeout = 50000,
-          context_window = 200000,
         }
         opts.auto_suggestions_provider = "copilot"
-        opts.web_search_engine = { provider = "tavily" }
+        opts.web_search_engine = {
+          provider = "tavily", -- tavily
+          proxy = "https://127.0.0.1:7890",
+        }
       end
 
       -- MCP 逻辑集成
@@ -82,10 +94,12 @@ return {
     keys = function(_, keys)
       local avante_prompts = {}
       local p_status, p_mod = pcall(require, "config.prompts")
-      if p_status then avante_prompts = p_mod.avante end
+      if p_status then
+        avante_prompts = p_mod.avante
+      end
 
       local custom_keys = {
-        { "<leader>aa", "<cmd>AvanteAsk<CR>",   desc = "Ask",   mode = { "n", "v" } },
+        { "<leader>aa", "<cmd>AvanteAsk<CR>", desc = "Ask", mode = { "n", "v" } },
         { "<leader>al", "<cmd>AvanteClear<cr>", desc = "Clear", mode = { "n", "v" } },
         -- { "<leader>ae", "<cmd>AvanteEdit<CR>", desc = "Edit Avante", mode = { "n", "v" } },
 
@@ -99,16 +113,16 @@ return {
         },
 
         -- --- 增强指令 (基于自定义 Prompts) ---
-        { "<leader>ar", create_avante_call(avante_prompts.refactor),       desc = "Refactor", mode = { "n", "v" } },
-        { "<leader>ao", create_avante_call(avante_prompts.optimize_code),  desc = "Optimize", mode = { "n", "v" } },
+        { "<leader>ar", create_avante_call(avante_prompts.refactor), desc = "Refactor", mode = { "n", "v" } },
+        { "<leader>ao", create_avante_call(avante_prompts.optimize_code), desc = "Optimize", mode = { "n", "v" } },
         -- { "<leader>ax", create_avante_call(avante_prompts.explain_code, true), desc = "Explain",  mode = { "n", "v" } },
-        { "<leader>ax", create_avante_call(avante_prompts.explain_code),   desc = "Explain",  mode = { "n", "v" } },
+        { "<leader>ax", create_avante_call(avante_prompts.explain_code), desc = "Explain", mode = { "n", "v" } },
         { "<leader>ab", create_avante_call(avante_prompts.fix_bugs, true), desc = "Fix Bugs", mode = { "n", "v" } },
         {
           "<leader>av",
           function()
-            local prompt = (vim.bo.filetype == "rust") and avante_prompts.rust_design_review or
-                avante_prompts.code_review
+            local prompt = (vim.bo.filetype == "rust") and avante_prompts.rust_design_review
+              or avante_prompts.code_review
             create_avante_call(prompt)()
           end,
           desc = "Code Review",
@@ -117,5 +131,5 @@ return {
       }
       return vim.list_extend(keys, custom_keys)
     end,
-  }
+  },
 }
