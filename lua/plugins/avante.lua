@@ -18,6 +18,9 @@ end
 return {
   {
     "yetone/avante.nvim",
+    enabled = function()
+      return vim.g.ai_plugin == "avante"
+    end,
     -- 使用 opts 函数模式来合并 LazyVim 的默认设置
     opts = function(_, opts)
       -- 加载自定义 Prompts
@@ -64,10 +67,10 @@ return {
         -- }
         opts.provider = "openrouter"
         opts.providers.openrouter = {
-          __inherited_from = 'openai',
-          endpoint = 'https://openrouter.ai/api/v1',
-          api_key_name = 'OPENROUTER_API_KEY',
-          model = 'anthropic/claude-sonnet-4.6',
+          __inherited_from = "openai",
+          endpoint = "https://openrouter.ai/api/v1",
+          api_key_name = "OPENROUTER_API_KEY",
+          model = "anthropic/claude-sonnet-4.6",
           timeout = 50000,
         }
         opts.auto_suggestions_provider = "copilot"

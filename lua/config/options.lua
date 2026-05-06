@@ -21,3 +21,4 @@ if vim.env.SSH_TTY or vim.env.SSH_CONNECTION then
   vim.opt.clipboard = "unnamedplus"
 end
 
+vim.g.ai_plugin = "avante" -- claude, avante
