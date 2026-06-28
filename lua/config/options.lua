@@ -1,4 +1,6 @@
 vim.g.autoformat = false
+vim.opt.background = "dark"
+vim.opt.termguicolors = true
 
 -- 检测是否在 SSH 环境下
 if vim.env.SSH_TTY or vim.env.SSH_CONNECTION then
@@ -21,4 +23,4 @@ if vim.env.SSH_TTY or vim.env.SSH_CONNECTION then
   vim.opt.clipboard = "unnamedplus"
 end
 
-vim.g.ai_plugin = "avante" -- claude, avante
+vim.g.ai_plugin = "claude" -- claude, avante
