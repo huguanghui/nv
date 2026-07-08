@@ -17,5 +17,5 @@ map("n", ";d", '"_d', opts)
 
 require("which-key").add({
   mode = {"n", "v"},
-  { "<leader>a", group = "Avante", icon = " " },
+  { "<leader>a", group = "AI", icon = " " },
 })
