@@ -197,6 +197,41 @@ M.kind_icons = {
   Variable = "󰆦",
 }
 
+-- 获取相对于 git 仓库根目录的路径（用于 AI 工具的 @path 引用格式）
+-- @param full_path 可选，完整路径；省略时使用当前 buffer 的路径
+function M.get_git_rel_path(full_path)
+  local path
+  if full_path then
+    path = full_path
+  elseif vim.api.nvim_buf_get_name(0) ~= "" then
+    path = vim.fn.expand("%:p")
+  else
+    return nil
+  end
+
+  if path == "" then
+    return nil
+  end
+
+  -- 尝试转换为 git 仓库相对路径
+  local git_root = vim.fn.systemlist("git rev-parse --show-toplevel 2>/dev/null")[1]
+  if git_root then
+    local prefix = git_root:match("^(.+)/$") or git_root
+    if path:sub(1, #prefix) == prefix then
+      return path:sub(#prefix + 2)
+    end
+  end
+
+  -- 回退：相对于当前工作目录
+  local cwd = vim.fn.getcwd()
+  local cwd_norm = cwd:match("^(.+)/$") or cwd
+  if path:sub(1, #cwd_norm) == cwd_norm then
+    return path:sub(#cwd_norm + 2)
+  end
+
+  return path
+end
+
 M.is_mcp_present = function()
   if vim.uv.fs_stat(vim.fn.expand("~/.mcpservers.json")) then
     return true

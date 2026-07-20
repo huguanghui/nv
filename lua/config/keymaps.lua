@@ -41,6 +41,20 @@ map("v", "<leader>mc", function()
   vim.notify("已复制: " .. range_str, vim.log.levels.INFO)
 end, vim.tbl_extend("force", opts, { desc = "Copy range ref" }))
 
+-- 普通模式复制文件路径引用 (@path)
+-- 用于粘贴到 Claude Code 等 AI 工具中引用整个文件
+map("n", "<leader>mp", function()
+  local utils = require("config.utils")
+  local path = utils.get_git_rel_path()
+  if not path then
+    vim.notify("没有文件名", vim.log.levels.WARN)
+    return
+  end
+  local ref = "@" .. path
+  vim.fn.setreg("+", ref)
+  vim.notify("已复制: " .. ref, vim.log.levels.INFO)
+end, vim.tbl_extend("force", opts, { desc = "Copy file path ref" }))
+
 require("which-key").add({
   mode = { "n", "v" },
   { "<leader>a", group = "AI", icon = " " },
