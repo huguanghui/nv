@@ -24,16 +24,19 @@ nvim/
 │       ├── noice.lua
 │       ├── neo-tree.lua
 │       ├── wk.lua
-│       ├── asynctask.lua
 │       ├── cmake-tools.lua
+│       ├── translate.lua
+│       ├── yazi.lua
 │       └── formatting.lua
 ├── snippets/             # VS Code 风格代码片段（C/C++）
-├── lazy-lock.json        # 插件版本锁定文件（63 个插件）
-├── lazyvim.json          # LazyVim extras 清单（27 个 extras）
+├── lazy-lock.json        # 插件版本锁定文件（62 个插件）
+├── lazyvim.json          # LazyVim extras 清单（24 个 extras）
 ├── stylua.toml           # Lua 格式化配置
 ├── selene.toml           # Lua lint 配置
 ├── .neoconf.json         # neoconf 配置
-└── tasks.ini             # asyncrun 任务定义
+├── lua/overseer/template/local.lua  # overseer 自定义任务模板（任务运行）
+├── plan.md               # 配置优化计划（待办/已完成）
+└── quick_use.md          # 快捷键速查表
 ```
 
 ## 核心约定
@@ -52,11 +55,12 @@ nvim/
 
 ### AI 插件切换机制
 项目同时配置了三种 AI 插件，通过 `vim.g.ai_plugin` 全局变量切换：
-- `"claude"` — 启用 claudecode.nvim（当前默认）
-- `"avante"` — 启用 avante.nvim
+- `"avante"` — 启用 avante.nvim（**当前默认**，`options.lua` 中设置）
+- `"claude"` — 启用 claudecode.nvim
 - `"opencode"` — 启用 opencode.nvim
 
 各插件在 `lua/plugins/*.lua` 中通过 `enabled = vim.g.ai_plugin == "xxx"` 控制启用。
+AI 提供商由 `vim.g.ai_provider` 控制（deepseek / copilot）。
 
 ### 主题
 - 通过 `utils.toggle_theme()` 在 `catppuccin-mocha` 和 `tokyonight-moon` 之间切换
@@ -76,17 +80,21 @@ nvim/
 ### 修改全局选项
 - 编辑 `lua/config/options.lua`
 
+### 任务运行（overseer）
+- 自定义任务模板 → `lua/overseer/template/local.lua`（generator 形式，勿用"返回列表"写法，已废弃）
+- 入口：`<leader>oo` 搜任务运行，`<leader>ow` 任务列表
+
 ### 更新插件版本
 - 运行 `:Lazy update` 自动更新 `lazy-lock.json`
 - 手动编辑 `lazy-lock.json` 锁定特定版本
 
 ### 调试
-- 使用 `:Lazy` 查看插件状态
+- 使用 `:Lazy` 查看插件状态（`Lazy clean` 清理 lock 中的孤儿插件）
 - 使用 `:checkhealth` 检查 LSP/DAP/Mason 状态
 - 查看 `:messages` 获取错误信息
 
 ## 当前分支状态
 
 - **分支**: main
-- **未提交更改**: `lazy-lock.json`（已修改）、`lua/config/keymaps.lua`（已修改）、`lua/config/options.lua`（已修改）
-- **新增文件**: `lua/plugins/opencode.lua`
+- **2026-09-08 优化批次**: 键位冲突修复（翻译 `<leader>i` 组、CMake `<leader>C` 组）、`X` 改安全删除、asynctasks 迁 overseer、移除 fzf extra —— 详见 `plan.md`
+- **工作区**: 存在未提交更改（keymaps/options/avante/cmake-tools/translate、lazyvim.json、lazy-lock.json 及新增文档），提交前先 `git status` 确认

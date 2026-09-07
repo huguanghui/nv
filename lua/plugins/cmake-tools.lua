@@ -26,13 +26,13 @@ return {
     }
   end,
   keys = {
-    -- 针对 Presets 优化的快捷键
-    { "<leader>cp", "<cmd>CMakeSelectConfigurePreset<cr>", desc = "Select Configure Preset" },
-    { "<leader>cB", "<cmd>CMakeSelectBuildPreset<cr>", desc = "Select Build Preset" },
-    { "<leader>cT", "<cmd>CMakeSelectTestPreset<cr>", desc = "Select Test Preset" },
-    { "<leader>cg", "<cmd>CMakeGenerate<cr>", desc = "CMake Generate" },
-    { "<leader>cb", "<cmd>CMakeBuild<cr>", desc = "CMake Build" },
-    { "<leader>cr", "<cmd>CMakeRun<cr>", desc = "CMake Run" },
-    { "<leader>cd", "<cmd>CMakeDebug<cr>", desc = "CMake Debug" },
+    -- 大写 C 组，避免覆盖 LazyVim 默认键位（如 <leader>cd = Line Diagnostics）
+    { "<leader>Cp", "<cmd>CMakeSelectConfigurePreset<cr>", desc = "Select Configure Preset" },
+    { "<leader>CB", "<cmd>CMakeSelectBuildPreset<cr>", desc = "Select Build Preset" },
+    { "<leader>CT", "<cmd>CMakeSelectTestPreset<cr>", desc = "Select Test Preset" },
+    { "<leader>Cg", "<cmd>CMakeGenerate<cr>", desc = "CMake Generate" },
+    { "<leader>Cb", "<cmd>CMakeBuild<cr>", desc = "CMake Build" },
+    { "<leader>Cr", "<cmd>CMakeRun<cr>", desc = "CMake Run" },
+    { "<leader>Cd", "<cmd>CMakeDebug<cr>", desc = "CMake Debug" },
   },
 }

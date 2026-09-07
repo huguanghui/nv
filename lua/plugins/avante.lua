@@ -71,10 +71,6 @@ return {
         },
       })
 
-      if vim.g.ai_provider ~= "copilot" then
-        opts.auto_suggestions_provider = "copilot"
-      end
-
       opts.system_prompt = function()
         local prompt = [[
 ## 编辑规则

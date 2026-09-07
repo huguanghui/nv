@@ -1,6 +1,7 @@
 vim.g.autoformat = false
 vim.opt.background = "dark"
 vim.opt.termguicolors = true
+vim.opt.jumpoptions = "view"
 
 -- 检测是否在 SSH 环境下
 if vim.env.SSH_TTY or vim.env.SSH_CONNECTION then
