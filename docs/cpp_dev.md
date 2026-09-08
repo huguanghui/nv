@@ -13,7 +13,7 @@
 | neocmakelsp + cmakelang | ✅ mason 已装 | CMakeLists 的 LSP / 诊断；`cmake_format` 格式化（conform 已配） |
 | codelldb | ✅ mason 已装 | DAP 调试器，cmake `<leader>Cd` 直连 |
 | nvim-dap-virtual-text | ✅ 已装 | 调试时行内显示变量值 |
-| neogen | ✅ | 函数文档注释生成（`<leader>sn`） |
+| neogen | ✅ | 函数文档注释生成（`<leader>cn`） |
 | snippets/c.json | ✅ 自定义 C/C++ 片段 | luasnip 提供 |
 | overseer file-run | ✅ | 单文件快速运行（可执行位/filetype 检测） |
 
@@ -25,7 +25,7 @@
 |---|---|---|
 | `<leader>ch` | **头文件/源文件切换** | C++ 开发最高频键位 |
 | `gd` | 跳转定义 | 跳到头文件声明时再 `gd` 一次通常到实现 |
-| `grr` | 查引用 | 配合 quickfix 批量浏览 |
+| `gr` | 查引用 | snacks picker 列表展示（LazyVim `nowait` 覆盖了内置 `grr`，直接按 `gr` 即可） |
 | `K` | 悬浮文档 | 标准库/自定义类型都有 |
 | `<leader>ss` | 文档符号 | 长头文件找类/函数 |
 | `crn` | 重命名（inc-rename） | clangd 支持跨文件重命名，头文件声明同步改 |
@@ -93,7 +93,7 @@ Cg Generate → Cb Build → ]d 跳编译错误 → Cd Debug
 ### 5. 其他技巧
 
 - **保存不格式化**（全局关了 autoformat），C++ 格式化走 clang-format：`<leader>cf`，项目根放 `.clang-format` 即可统一风格（clangd 的 `--fallback-style=llvm` 只影响诊断内嵌格式提示）
-- **doc 注释**：`<leader>sn` 在函数上一行生成 doxygen 风格注释（neogen 支持 C++）
+- **doc 注释**：`<leader>cn` 在函数上一行生成 doxygen 风格注释（neogen 支持 C++；`<leader>s` 组是 Notes/杂项，与注释无关）
 - **snippets**：`snippets/c.json` 里的片段（如 main 模板、类定义），插入式补全里 `<Tab>` 展开；新增片段直接编辑该文件
 - **单文件实验**：有可执行位的 `.cpp` 不适合直接跑（需编译），实验代码建议 `g++ -std=c++20 x.cpp && <leader>oo` 跑 file-run；或直接用下面的 Godbolt 插件
 
