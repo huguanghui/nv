@@ -41,10 +41,15 @@ end, { desc = "Copy range ref" })
 -- 用于粘贴到 Claude Code 等 AI 工具中引用整个文件
 map("n", "<leader>mp", function()
   local utils = require("config.utils")
-  local path = utils.get_git_rel_path()
-  if not path then
+  local full_path, is_dir = utils.get_context_path()
+  if not full_path then
     vim.notify("没有文件名", vim.log.levels.WARN)
     return
+  end
+  local path = utils.get_git_rel_path(full_path) or full_path
+  -- 目录节点补尾斜杠，与 neo-tree 内置 P 映射行为一致
+  if is_dir and not path:match("/$") then
+    path = path .. "/"
   end
   local ref = "@" .. path
   vim.fn.setreg("+", ref)

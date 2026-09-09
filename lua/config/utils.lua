@@ -197,6 +197,27 @@ M.kind_icons = {
   Variable = "󰆦",
 }
 
+-- 获取光标上下文的完整路径：neo-tree 窗口下取光标所在树节点，否则取当前 buffer
+-- @return 完整路径（可能带目录尾斜杠）, 是否目录；无上下文时返回 nil
+function M.get_context_path()
+  -- neo-tree 侧栏 buffer：其 bufname 是 "neo-tree filesystem [N]"，
+  -- 不能走当前 buffer 分支，必须取光标下的树节点
+  if vim.b.neo_tree_source then
+    local ok, manager = pcall(require, "neo-tree.sources.manager")
+    if ok then
+      local state = manager.get_state_for_window(vim.api.nvim_get_current_win())
+      local node = state and state.tree and state.tree:get_node()
+      if node then
+        return node:get_id(), node.type == "directory"
+      end
+    end
+  end
+  if vim.api.nvim_buf_get_name(0) ~= "" then
+    return vim.fn.expand("%:p"), false
+  end
+  return nil
+end
+
 -- 获取相对于 git 仓库根目录的路径（用于 AI 工具的 @path 引用格式）
 -- @param full_path 可选，完整路径；省略时使用当前 buffer 的路径
 function M.get_git_rel_path(full_path)
