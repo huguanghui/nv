@@ -1,0 +1,40 @@
+diff --git a/app/routes.js b/app/routes.js
+index 63d3a9a..1141838 100644
+--- a/app/routes.js
++++ b/app/routes.js
+@@ -8,6 +8,35 @@ const use = function (route) {
+   routes.unshift((req, res, next) => () => route(req, res, next))
+ }
+ 
++// [mkdp-patch] 修复刷新 404：/ 与 /<number> 重定向到 /page/<number>
++let mkdpLastPage = null
++use(async (req, res, next) => {
++  const m = req.asPath.match(/^\/page\/(\d+)/)
++  if (m) {
++    mkdpLastPage = Number(m[1])
++  }
++  if (req.asPath === '/' || /^\/\d+$/.test(req.asPath)) {
++    let n
++    if (/^\/\d+$/.test(req.asPath)) {
++      n = req.asPath.slice(1)
++    } else {
++      // 根路径：始终优先跟随 nvim 当前 buffer，切文件后刷新 / 即看到当前文件
++      n = mkdpLastPage
++      try {
++        const buffer = await req.plugin.nvim.buffer
++        if (buffer && buffer.id) {
++          n = buffer.id
++        }
++      } catch (e) {}
++      n = n || 1
++    }
++    res.statusCode = 302
++    res.setHeader('Location', '/page/' + n)
++    return res.end()
++  }
++  next()
++})
++
+ // /page/:number
+ use((req, res, next) => {
+   if (/\/page\/\d+/.test(req.asPath)) {

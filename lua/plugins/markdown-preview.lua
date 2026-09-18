@@ -1,11 +1,11 @@
 return {
-  -- Markdown 浏览器预览（自建 fork：huguanghui/markdown-preview.nvim）。
+  -- Markdown 浏览器预览
   -- 当前 nvim 跑在 SSH + tmux 且无 DISPLAY，插件无法拉起浏览器：
   --   1) 固定 8113 端口并打印预览地址，配合 `ssh -L 8113:127.0.0.1:8113` 在本机浏览器查看；
   --   2) 打开预览前先清掉占用 8113 的旧 markdown-preview 服务，避免端口冲突导致启动失败。
   -- 注意：端口固定意味着同时只保留一个预览服务，多个 nvim 实例预览时会互相顶掉。
   {
-    "huguanghui/markdown-preview.nvim",
+    "iamcco/markdown-preview.nvim",
     init = function()
       vim.g.mkdp_port = "8113" -- 固定端口，方便 SSH 端口转发
       vim.g.mkdp_echo_preview_url = 1 -- 在 :messages / 命令行打印预览地址
