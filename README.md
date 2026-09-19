@@ -36,8 +36,8 @@ Refer to the [documentation](https://lazyvim.github.io/installation) to get star
 
 | 前缀 | 分组名 | 图标 |
 |------|--------|------|
-| `<leader>a` | AI |  |
-| `<leader>m` | Misc |  |
+| `<leader>a` | AI | 🤖 |
+| `<leader>m` | Misc | 🔧 |
 
 ### 文件浏览器（Neo-tree）
 
