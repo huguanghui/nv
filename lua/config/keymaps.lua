@@ -58,6 +58,18 @@ end, { desc = "Copy file path ref" })
 
 require("which-key").add({
   mode = { "n", "v" },
-  { "<leader>a", group = "AI", icon = "\238\128\158 " },
-  { "<leader>m", group = "Misc", icon = "\239\160\181 " },
+  -- Nerd Fonts v3 码点：cod-robot U+EC20 / cod-tools U+EB6D
+  -- 旧码点 U+E01E、U+F835 在 NF v3 中已移除，会导致 which-key 图标显示为方框
+  { "<leader>a", group = "AI", icon = "\238\176\160 " },
+  { "<leader>m", group = "Misc", icon = "\238\173\173 " },
+  -- AI 子项：显式指定图标，避免全部继承 <leader>a 的组图标
+  { "<leader>ac", icon = "\238\171\135 " }, -- nf-cod-comment_discussion
+  { "<leader>ae", icon = "\238\169\179 " }, -- nf-cod-edit
+  { "<leader>ah", icon = "\238\170\130 " }, -- nf-cod-history
+  { "<leader>al", icon = "\238\170\191 " }, -- nf-cod-clear_all
+  { "<leader>an", icon = "\238\169\160 " }, -- nf-cod-add
+  { "<leader>ap", icon = "\238\174\162 " }, -- nf-cod-server_process
+  { "<leader>as", icon = "\238\171\151 " }, -- nf-cod-debug_stop
+  -- 顶层映射：Keywordprg（LazyVim 的 <leader>K）
+  { "<leader>K", icon = "\238\170\164 " }, -- nf-cod-book
 })
