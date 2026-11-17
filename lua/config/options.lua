@@ -23,6 +23,3 @@ if vim.env.SSH_TTY or vim.env.SSH_CONNECTION then
   -- 开启 unnamedplus，让 y 直接同步到系统剪切板（即上面的 OSC 52）
   vim.opt.clipboard = "unnamedplus"
 end
-
-vim.g.ai_plugin = "avante" -- claude, avante, opencode
-vim.g.ai_provider = "copilot" -- deepseek, copilot
