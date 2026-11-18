@@ -36,8 +36,7 @@ require("lazy").setup({
     notify = false, -- notify on update
   }, -- automatically check for plugin updates
   git = {
-    -- 代理链路下并发 fetch 偶发较慢，默认 120s 易误杀，放宽到 240s
-    timeout = 240,
+    timeout = 120,
   },
   performance = {
     rtp = {
@@ -46,7 +45,7 @@ require("lazy").setup({
         "gzip",
         -- "matchit",
         -- "matchparen",
-        -- "netrwPlugin",
+        "netrwPlugin",
         "tarPlugin",
         "tohtml",
         "tutor",
