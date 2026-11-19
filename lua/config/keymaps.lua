@@ -58,9 +58,13 @@ end, { desc = "Copy file path ref" })
 
 require("which-key").add({
   mode = { "n", "v" },
-  -- Nerd Fonts v3 码点：cod-robot U+EC20 / cod-tools U+EB6D
-  -- 旧码点 U+E01E、U+F835 在 NF v3 中已移除，会导致 which-key 图标显示为方框
+  -- 为当前没有图标的分组/映射补上 Nerd Fonts v3 码点图标
+  -- cod-tools U+EB6D：Misc 分组
   { "<leader>m", group = "Misc", icon = "\238\173\173 " },
-  -- 顶层映射：Keywordprg（LazyVim 的 <leader>K）
-  { "<leader>K", icon = "\238\170\164 " }, -- nf-cod-book
+  -- fa-language U+F1AB：翻译（i18n）
+  { "<leader>i", group = "i18n", icon = "\239\134\171 " },
+  -- cod-build U+EC5A：CMake 构建
+  { "<leader>C", group = "CMake", icon = "\238\177\154 " },
+  -- 顶层映射：Keywordprg（LazyVim 的 <leader>K），cod-book U+EAA4
+  { "<leader>K", icon = "\238\170\164 " },
 })
